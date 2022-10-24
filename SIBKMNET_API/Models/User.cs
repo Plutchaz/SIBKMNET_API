@@ -11,7 +11,7 @@ namespace SIBKMNET_API.Models
     {
         public User(ViewModels.UserVM user)
         {
-
+            user.Id = Employee.Id //masih error disini, how to map employee Id?
             this.Password = user.Password;
         }
 

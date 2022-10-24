@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SIBKMNET_API.Context;
 using SIBKMNET_API.Models;
 using SIBKMNET_API.ViewModels;
@@ -51,6 +52,27 @@ namespace SIBKMNET_API.Controllers
 
         }
         //put (update)
+        [HttpPut]
+        public ActionResult Put(ViewModels.UserVM userVM)
+        {
+            User user = new User(userVM);
+            myContext.Entry(user).State = EntityState.Modified;
+            var result = myContext.SaveChanges();
+            if (result > 0)
+                return Ok(new { status = 200, message = "data has been updated" });
+            return BadRequest(new { status = 400, message = "data has not been updated" });
+        }
+
         //delete
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            var data = myContext.Users.Find(id);
+            myContext.Users.Remove(data);
+            var result = myContext.SaveChanges();
+            if (result > 0)
+                return Ok(new { status = 200, message = "data has been deleted" });
+            return BadRequest(new { status = 400, message = "data has not been deleted" });
+        }
     }
 }
